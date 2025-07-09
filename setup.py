@@ -1,0 +1,61 @@
+from setuptools import setup, find_packages
+import os
+
+requirements = [
+'argparse', 
+'certifi==2025.4.26',
+'charset-normalizer==3.4.2',
+'cloud-sql-python-connector==1.12.0',
+'configparser',
+'fastavro==1.10.0',
+'google-api-core==2.24.0',
+'google-auth==2.40.0',
+'google-cloud-bigquery==3.31.0',
+'google-cloud-core==2.4.3',
+'google-cloud-storage==3.1.0',
+'google-crc32c==1.7.1',
+'google-resumable-media==2.7.2',
+'googleapis-common-protos==1.70.0',
+'greenlet==3.2.3',
+'grpcio==1.71.0',
+'grpcio-status==1.71.0',
+'idna==3.10',
+'numpy==2.2.5',
+'packaging==25.0',
+'pandas==2.2.3',
+'pg8000==1.31.2',
+'proto-plus==1.26.1',
+'protobuf==5.29.4',
+'pyarrow==20.0.0',
+'pyasn1==0.6.1',
+'pyasn1_modules==0.4.2',
+'python-dateutil==2.9.0.post0',
+'pytz==2025.2',
+'PyYAML==6.0.2',
+'requests==2.32.3',
+'rsa==4.9.1',
+'setuptools==80.9.0',
+'six==1.17.0',
+'SQLAlchemy==2.0.41',
+'typing_extensions==4.14.0',
+'tzdata==2025.2',
+'urllib3==2.4.0'
+]
+
+setup(
+    name="trulens-data-transformer",
+    version="1.0.3",
+    author="TruVis",
+    packages=find_packages(include=["postgres_utility", "postgres_utility*"]),
+    install_requires=requirements,
+    python_requires=">=3.10",
+    include_package_data=True,
+    package_data={
+        "postgres_utility": ["**/*"],
+    },
+    entry_points={
+        "console_scripts": [
+            "recommendation = postgres_utility.run_sql_scripts:main",
+        ]
+    },
+)
