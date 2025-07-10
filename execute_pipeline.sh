@@ -31,11 +31,11 @@ set -o pipefail
 SCRIPT_NAME=$(basename "$0")
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="logs/pipeline_execution_${TIMESTAMP}.log"
-JAR_FILE="query-genie-1.0.0.jar"  # JAR filename
-DATA_TRANSFORMER_WHL_FILE="trulens_data_transformer-1.0.1-py3-none-any.whl"
-DATA_TRANSFORMATION_CONFIG_PATH="./data_transformation/config/config.ini" 
-DATA_EXTRACTOR_WHL_FILE="trulens_extraction_utility-1.0.1-py3-none-any.whl"
-DATA_EXTRACTOR_CONFIG_PATH="./extraction_utility/config/config.ini"
+JAR_FILE="query-genie-lib/query-genie-1.0.0.jar"  # JAR filename
+DATA_TRANSFORMER_WHL_FILE="data_transformation/trulens_data_transformer-1.0.1-py3-none-any.whl"
+DATA_TRANSFORMATION_CONFIG_PATH="data_transformation/config/config.ini" 
+DATA_EXTRACTOR_WHL_FILE="extraction_utility/trulens_extraction_utility-1.0.1-py3-none-any.whl"
+DATA_EXTRACTOR_CONFIG_PATH="extraction_utility/config/config.ini"
 
 # Create logs directory if it doesn't exist
 if [ ! -d "logs" ]; then
@@ -428,8 +428,8 @@ execute_data_extractor() {
     archive_data_files "data_output"
     
     # Execute the command
-    execute_command "python3 -m extraction_utility.info_schema" "extraction_utility/info_schema.py execution"
-    execute_command "python3 -m extraction_utility.logs" "extraction_utility/logs.py execution"
+    execute_command "python3 -m extraction_utility.info_schema --config-path \"$DATA_EXTRACTOR_CONFIG_PATH\"" "extraction_utility/info_schema.py execution"
+    execute_command "python3 -m extraction_utility.logs --config-path \"$DATA_EXTRACTOR_CONFIG_PATH\"" "extraction_utility/logs.py execution"
     local status=$?
 
     # Calculate and store execution time
@@ -479,7 +479,7 @@ execute_dataload_from_parquet() {
     # fi
 
     # Execute the command
-    execute_command "python3 -m postgres_utility.loadDataToPostgres --config-path \"$DATA_EXTRACTOR_CONFIG_PATH\"" "postgres_utility/loadDataToPostgres.py execution"
+    execute_command "python3 -m postgres_utility.loadDataToPostgres --config-path \"$DATA_TRANSFORMATION_CONFIG_PATH\"" "postgres_utility/loadDataToPostgres.py execution"
     local status=$?
 
     # Calculate and store execution time
